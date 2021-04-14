@@ -1,25 +1,19 @@
+const { select } = require("../db/connection");
 const knex = require("../db/connection");
 
-const mapProperties = require("../map-properties/map-properties");
+async function hi(theater) {
+    theater.movies = await knex("movies")
+    .join("movies_theaters", "movies.movie_id", "movies_theaters.movie_id")
+    .where({"movies_theaters.theater_id":theater.theater_id})
 
-const addMovie = mapProperties({
-    movie_id: "m.movie_id",
-    title: "m.title",
-    runtime_in_minutes: "m.runtime_in_minutes",
-    rating: "m.rating",
-    description: "m.description",
-    image_url: "m.image_url",
-    is_showing: "mt.is_showing",
-    theater_id: "t.theater_id",
-});
+    return theater;
+}
 
 function list() {
-    return knex("theaters as t")
-    .join("movies_theaters as mt", "t.theater_id", "mt.theater_id")
-    .join("movies as m", "mt.movie_id", "m.movie_id")
-    .select("t.*", "m.*")
-    .first()
-    .then(addMovie);
+    return knex("theaters")
+    .select("*")
+    .then((data)=>Promise.all(data.map(hi)))
+    
 }
 
 module.exports = {
