@@ -30,4 +30,5 @@ async function read(req,res,next) {
 module.exports = {
   list,
   read: [movieExists,read],
+  movieExists,
 };

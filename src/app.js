@@ -3,7 +3,7 @@ const express = require("express");
 const app = express();
 const moviesRouter = require("./movies/movies.router");
 const theatersRouter = require("./theaters/theaters.router");
-const reviewsRouter = require("./reviews/reviews.router");
+const reviewsRouter = require("./reviews/reviews.router.js");
 
 app.use(express.json());
 
